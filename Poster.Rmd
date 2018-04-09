@@ -29,7 +29,7 @@ uni_data
 
 
 
-Graph for tutition vs ranking
+Graph for tutition vs ranking(denogram?)
 ```{r}
 
 
@@ -39,5 +39,12 @@ Graph for institutioal Control of the first 150 ranking universities
 ```{r}
 instiControl_data <- uni_data[c(1:150),c(1:7)]
 
-
+ggplot(instiControl_data, aes(x = rank, color = institutionalControl)) + 
+  geom_density(adjust = .7, size = 1) + 
+  labs(x = "Ranking",
+       y = "Density",
+       color = "Institutional Control",
+       title = "Distribution of Private vs Public School in 
+       Universities Ranked First 150",
+       caption = "Source:https://www.kaggle.com/theriley106/university-statistics")
 ```
