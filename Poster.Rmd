@@ -1,0 +1,22 @@
+---
+---
+title: "36-315 Homework 09, Spring 2018"
+author: "Jenny Zhang yijiaz2, Chuning Yang chuningy,Xiang Si xsi"
+date: "Due Wednesday, April 4, 2018 (11:59pm) on Canvas"
+output: 
+  html_document:
+    toc:  true
+    toc_float:  true
+    code_folding:  show
+---
+
+#  Poster
+---
+
+```{r}
+library(tidyverse)
+```
+```{r}
+uni_data <- read.csv("universities.csv")
+
+```
