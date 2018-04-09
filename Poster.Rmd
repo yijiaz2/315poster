@@ -25,3 +25,18 @@ data_colnames <- c("rank","sat_avg", "acceptance_rate", "state",
 uni_data <- uni_data[data_colnames]
 uni_data
 ```
+
+
+
+Graph for tutition vs ranking
+```{r}
+
+
+```
+
+Graph for institutioal Control of the first 150 ranking universities
+```{r}
+instiControl_data <- uni_data[c(1:150),c(1:7)]
+
+
+```
