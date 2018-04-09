@@ -20,7 +20,8 @@ library(tidyverse)
 uni_data <- read.csv("universities.csv")
 
 data_colnames <- c("rank","sat_avg", "acceptance_rate", "state",
-                   "tuition", "overallRank", "institutionalControl")
+                   "tuition", "overallRank", "institutionalControl",
+                   "percent_receiving_aid")
 
 uni_data <- uni_data[data_colnames]
 uni_data
