@@ -21,7 +21,9 @@ uni_data <- read.csv("universities.csv")
 
 data_colnames <- c("rank","sat_avg", "acceptance_rate", "state",
                    "tuition", "overallRank", "institutionalControl",
-                   "percent_receiving_aid")
+                   "percent_receiving_aid", "percent_receiving_aid",
+                   "cost_after_aid", "hs_gpa_avg",
+                   "tuition", "engineeringRepScore")
 
 uni_data <- uni_data[data_colnames]
 uni_data
@@ -47,4 +49,44 @@ ggplot(instiControl_data, aes(x = rank, color = institutionalControl)) +
        title = "Distribution of Private vs Public School in 
        Universities Ranked First 150",
        caption = "Source:https://www.kaggle.com/theriley106/university-statistics")
+```
+
+
+```{r}
+us_data <- map_data("state")
+state_borders <- map_data("state")
+library(datasets)
+college_count_by_state <- instiControl_data %>% 
+  group_by(state) %>%
+  summarize(college_num = n())
+
+college_count_by_state$state <- state.name[match(college_count_by_state$state, state.abb)]
+college_count_by_state <- college_count_by_state %>%
+  mutate(state=tolower(state))
+state_borders <- state_borders %>%
+  left_join(college_count_by_state, 
+            by = c("region" = "state"))
+
+ggplot(state_borders) + 
+  geom_polygon(aes(x = long, y = lat, group = group,
+                   fill = college_num), color = "black") + 
+  scale_fill_gradient2(low = "green", mid = "white", 
+                         high = "darkred", midpoint = 4) +
+  theme_void() +
+  coord_map("polyconic") + 
+  labs(
+    title = "Top 150 Universities in the U.S. by State",
+    caption = "Source: https://www.kaggle.com/theriley106/university-statistics",
+    fill = "# of Top 150 Universities"
+  ) + 
+  theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(uni_data, aes(x = sat_avg, y=engineeringRepScore, color=institutionalControl))+
+  geom_point()+
+  labs(title = "Distribution of Engineering Reputation Score and student SAT average",
+       x = "SAT Average",
+       y = "Engineering Reputation Score",
+       caption = "Source: https://www.kaggle.com/theriley106/university-statistics")
 ```
