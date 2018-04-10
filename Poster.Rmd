@@ -30,6 +30,7 @@ uni_data
 ```
 
 
+<<<<<<< HEAD
 
 Graph for tutition vs ranking(denogram?)
 ```{r}
@@ -65,10 +66,59 @@ college_count_by_state <- college_count_by_state %>%
   mutate(state=tolower(state))
 state_borders <- state_borders %>%
   left_join(college_count_by_state, 
+=======
+```{r}
+library(ggplot2)
+#plot1
+ggplot(uni_data, aes(x = sat_avg, y = acceptance_rate, colour = uni_data$institutionalControl)) +
+  geom_jitter() +
+  labs(x = "SAT Average", y = "Acceptance Rate", colour = "Institutional Type",
+       title = "Distribution of SAT score by Acceptance Rate") 
+#plot2
+ggplot(uni_data, aes(x = tuition)) +
+  geom_histogram(bins = 25) + 
+  geom_rug() + 
+  labs(x = "Tuition", y = "Count",
+       title = "Distribution of Tuiton among U.S colleges")
+
+#plot3
+ggplot(data = uni_data, aes(x = sat_avg, fill = institutionalControl)) +
+  geom_histogram(bins = 10)  +
+  labs(title = "Proportional stacked bar chart of insitutional type by SAT distribution",
+       x = "SAT average", 
+       y = "Count",
+       fill = "Institutional Type") + 
+  theme(legend.position = "bottom")
+```
+
+
+```{r, message = FALSE}
+#chorelopath on count of colleges in state level
+# chorelopath on child average state sat score
+#chorelopath on average tuition in state level
+
+state_borders <- map_data("state") 
+
+#  Load state.x77 data
+library(datasets)
+state_x77 <- tibble::as_data_frame(state.x77) %>%
+  mutate(state = rownames(state.x77)) %>%
+  mutate(state = tolower(state))
+
+uni_tuition_state <- uni_data %>% 
+  group_by(state) %>%
+  summarize(count = n()) %>%
+  mutate(state = tolower(state))
+
+#  join state_x77 data to state_borders
+state_borders <- state_borders %>%
+  left_join(uni_tuition_state, 
+>>>>>>> 7eff969d0e3d21b91ba12f91e0c4b93b89d8a979
             by = c("region" = "state"))
 
 ggplot(state_borders) + 
   geom_polygon(aes(x = long, y = lat, group = group,
+<<<<<<< HEAD
                    fill = college_num), color = "black") + 
   scale_fill_gradient2(low = "green", mid = "white", 
                          high = "darkred", midpoint = 4) +
@@ -90,3 +140,19 @@ ggplot(uni_data, aes(x = sat_avg, y=engineeringRepScore, color=institutionalCont
        y = "Engineering Reputation Score",
        caption = "Source: https://www.kaggle.com/theriley106/university-statistics")
 ```
+=======
+                   fill = count), color = "black") + 
+  scale_fill_gradient2(low = "green", mid = "lightgrey", 
+                         high = "darkred") +
+  theme_void() +
+  coord_map("polyconic") + 
+  labs(
+    title = "Child Poverty Rate in the U.S. by State",
+    subtitle = "Percent of Children under Poverty Level",
+    caption = "U.S. Census Demographic Data",
+    fill = "Child Poverty %"
+  ) + 
+  theme(legend.position = "bottom")
+
+```
+>>>>>>> 7eff969d0e3d21b91ba12f91e0c4b93b89d8a979
