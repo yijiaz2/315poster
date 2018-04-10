@@ -26,7 +26,7 @@ data_colnames <- c("rank","sat_avg", "acceptance_rate", "state",
                    "tuition", "engineeringRepScore")
 
 uni_data <- uni_data[data_colnames]
-uni_data
+
 ```
 
 
