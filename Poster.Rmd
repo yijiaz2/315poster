@@ -30,8 +30,6 @@ uni_data
 ```
 
 
-<<<<<<< HEAD
-
 Graph for tutition vs ranking(denogram?)
 ```{r}
 
@@ -66,7 +64,33 @@ college_count_by_state <- college_count_by_state %>%
   mutate(state=tolower(state))
 state_borders <- state_borders %>%
   left_join(college_count_by_state, 
-=======
+            by = c("region" = "state"))
+
+ggplot(state_borders) + 
+  geom_polygon(aes(x = long, y = lat, group = group,
+                   fill = college_num), color = "black") + 
+  scale_fill_gradient2(low = "green", mid = "white", 
+                         high = "darkred", midpoint = 4) +
+  theme_void() +
+  coord_map("polyconic") + 
+  labs(
+    title = "Top 150 Universities in the U.S. by State",
+    caption = "Source: https://www.kaggle.com/theriley106/university-statistics",
+    fill = "# of Top 150 Universities"
+  ) + 
+  theme(legend.position = "bottom")
+
+```
+
+```{r}
+ggplot(uni_data, aes(x = sat_avg, y=engineeringRepScore, color=institutionalControl))+
+  geom_point()+
+  labs(title = "Distribution of Engineering Reputation Score and student SAT average",
+       x = "SAT Average",
+       y = "Engineering Reputation Score",
+       caption = "Source: https://www.kaggle.com/theriley106/university-statistics")
+```
+
 ```{r}
 library(ggplot2)
 #plot1
@@ -92,67 +116,39 @@ ggplot(data = uni_data, aes(x = sat_avg, fill = institutionalControl)) +
 ```
 
 
-```{r, message = FALSE}
-#chorelopath on count of colleges in state level
-# chorelopath on child average state sat score
-#chorelopath on average tuition in state level
 
-state_borders <- map_data("state") 
-
-#  Load state.x77 data
+```{r}
+state_borders <- map_data("state")
 library(datasets)
-state_x77 <- tibble::as_data_frame(state.x77) %>%
-  mutate(state = rownames(state.x77)) %>%
-  mutate(state = tolower(state))
-
-uni_tuition_state <- uni_data %>% 
+college_count_by_state <- uni_data %>% 
   group_by(state) %>%
-  summarize(count = n()) %>%
-  mutate(state = tolower(state))
+  summarize(avg_tuition = mean(tuition, na.rm = TRUE))
 
-#  join state_x77 data to state_borders
+college_count_by_state$state <- state.name[match(college_count_by_state$state, state.abb)]
+college_count_by_state <- college_count_by_state %>%
+  mutate(state=tolower(state))
 state_borders <- state_borders %>%
-  left_join(uni_tuition_state, 
->>>>>>> 7eff969d0e3d21b91ba12f91e0c4b93b89d8a979
+  left_join(college_count_by_state, 
             by = c("region" = "state"))
 
 ggplot(state_borders) + 
   geom_polygon(aes(x = long, y = lat, group = group,
-<<<<<<< HEAD
-                   fill = college_num), color = "black") + 
-  scale_fill_gradient2(low = "green", mid = "white", 
-                         high = "darkred", midpoint = 4) +
+                   fill = avg_tuition), color = "black") + 
+  scale_fill_gradient2(low = "yellow", mid = "white", 
+                         high = "darkred", midpoint = 25000) +
   theme_void() +
   coord_map("polyconic") + 
   labs(
-    title = "Top 150 Universities in the U.S. by State",
+    title = "Average Tuition Of Colleges the U.S. by State",
     caption = "Source: https://www.kaggle.com/theriley106/university-statistics",
-    fill = "# of Top 150 Universities"
+    fill = "Avg Tuitions"
   ) + 
   theme(legend.position = "bottom")
 ```
 
-```{r}
-ggplot(uni_data, aes(x = sat_avg, y=engineeringRepScore, color=institutionalControl))+
-  geom_point()+
-  labs(title = "Distribution of Engineering Reputation Score and student SAT average",
-       x = "SAT Average",
-       y = "Engineering Reputation Score",
-       caption = "Source: https://www.kaggle.com/theriley106/university-statistics")
-```
-=======
-                   fill = count), color = "black") + 
-  scale_fill_gradient2(low = "green", mid = "lightgrey", 
-                         high = "darkred") +
-  theme_void() +
-  coord_map("polyconic") + 
-  labs(
-    title = "Child Poverty Rate in the U.S. by State",
-    subtitle = "Percent of Children under Poverty Level",
-    caption = "U.S. Census Demographic Data",
-    fill = "Child Poverty %"
-  ) + 
-  theme(legend.position = "bottom")
 
-```
->>>>>>> 7eff969d0e3d21b91ba12f91e0c4b93b89d8a979
+
+
+
+
+
